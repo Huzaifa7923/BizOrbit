@@ -31,6 +31,7 @@ export class User {
   @Column({nullable:true})
   address: string;
   
+  @Field()
   @Column({ default: false })
   isAdmin: boolean;
 

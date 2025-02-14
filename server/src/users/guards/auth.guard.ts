@@ -1,42 +1,49 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Request } from 'express';
 import { UsersService } from '../users.service';
-
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private readonly usersService: UsersService) {}
 
-    constructor(private usersService: UsersService) {}
-
-    async checkUser(request: Request) {
-        const authHeader = request.headers.authorization;
-        if(!authHeader){
-            return false;
-        }
-
-        const token=authHeader.split(' ')[1];
-
-        if(!token){
-            return false;
-        }
-        const user=await this.usersService.verifyToken(token);
-        return user;
+  // Helper method to validate the token and fetch the user
+  async validateToken(token: string): Promise<any> {
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
     }
 
-  async canActivate(
-    context: GqlExecutionContext,
-  ): Promise<boolean> {
-    const ctx=GqlExecutionContext.create(context);
+    try {
+      const user = await this.usersService.verifyToken(token);
+      if (!user) {
+        throw new UnauthorizedException('Invalid token');
+      }
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+
+    const ctx = GqlExecutionContext.create(context); // guard k paas direct accees nhi hota unlike resolvers
     const request = ctx.getContext().req;
-    console.log("inside guard");
-    const user=await this.checkUser(request);
-    console.log(user)
-    if(!user){
-        return false;
+
+
+    const token = request.cookies?.token; 
+    console.log('Token from cookies:', token);
+
+    if (!token) {
+      throw new UnauthorizedException('No token found in cookies');
     }
-    request.user=user;
+
+    const user = await this.validateToken(token);
+    console.log('User from token:', user);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid token');
+    }
+
+    request.user = user;
     return true;
   }
 }

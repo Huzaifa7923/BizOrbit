@@ -8,6 +8,7 @@ type User {
   name: String!
   phone: String!
   address: String!
+  isAdmin: Boolean!
 }
 
 type LoginResponse {
@@ -21,9 +22,9 @@ type Query {
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInput!): LoginResponse!
   signIn(signInInput: SignInInput!): LoginResponse!
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateMyProfile(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
 }
 
@@ -42,9 +43,9 @@ input SignInInput {
 
 input UpdateUserInput {
   email: String
-  password: String
+  password: String!
   name: String
   phone: String
   address: String
-  id: Int!
+  newPassword: String
 }

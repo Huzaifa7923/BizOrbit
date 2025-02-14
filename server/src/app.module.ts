@@ -23,6 +23,7 @@ import { join } from 'path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver, // using Apollo Server as the GraphQL server driver
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // schema file generated auto
+      context: ({ req, res }) => ({ req, res }), // now will get req / res in resolvers :
     })
     ,UsersModule
   ],

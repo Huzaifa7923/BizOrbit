@@ -1,14 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInput } from './dto/update-profile.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { UsersResolver } from './users.resolver';
+import {omit} from 'lodash';
+
 import { SignInInput } from './dto/sign-in.input';
+import { error } from 'console';
+
 
 @Injectable()
 export class UsersService {
@@ -66,7 +69,14 @@ export class UsersService {
       password: hashedPassword
     });
     
-    await this.userRepository.save(user);
+    const userSaved=await this.userRepository.save(user);
+
+    const token=await this.generateToken(userSaved);
+    
+    return {
+      user,
+      token
+    }
   }
 
   async signIn(signInInput: SignInInput) {
@@ -93,8 +103,25 @@ export class UsersService {
   }
 
   //by user himself
-  updateProfile(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async updateProfile(id: number, updateUserInput: UpdateUserInput) {
+
+    console.log("inside service");
+    const user=await this.userRepository.findOne({where:{id}});
+    if(!user){
+      throw new error("User not found");
+    }
+    const isValid=await bcrypt.compare(updateUserInput.password, user.password);
+
+    if(!isValid)
+      throw new error("Password do not match");
+
+    if(updateUserInput.newPassword){ 
+      updateUserInput.password=await bcrypt.hash(updateUserInput.newPassword,10);
+    }
+    const updateData = omit(updateUserInput, ['newPassword']);
+
+    await this.userRepository.update(id, updateData);
+    return this.findOne(id);
   }
 
   //admin will update another user
