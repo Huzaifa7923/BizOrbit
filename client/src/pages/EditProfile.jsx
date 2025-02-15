@@ -114,7 +114,7 @@ const EditProfile = () => {
           className="bg-blue-500 text-white p-2 rounded w-full"
         >
 
-          {loading ? "Signing Up..." : "Sign Up"}
+          {loading ? "Signing Up..." : "Save"}
         </button>
         {error && <p className="text-red-500 mt-4">{error.message}</p>}
       </form>

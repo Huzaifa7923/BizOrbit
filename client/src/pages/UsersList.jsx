@@ -4,16 +4,15 @@ import { GET_ALL_USERS } from "../graphql/users/userQueries";
 // import Loading from "../components/Loading";
 // import Error from "../components/Error";
 import {useNavigate} from 'react-router-dom'
-
+import { useDispatch } from "react-redux";
 
 const UsersList = () => {
   const { loading, error, data } = useQuery(GET_ALL_USERS);
 
+  const dispatch=useDispatch();
+
   const navigate=useNavigate();
   
-//   if (loading) return <Loading />;
-//   if (error) return <Error message={error.message} />;
-
 
   return (
     <div className="p-4">
@@ -25,7 +24,7 @@ const UsersList = () => {
             <p>Email: {user.email}</p>
             <p>Phone: {user.phone}</p>
             <button
-              onClick={() => navigate(`/editProfile/${user.id}`)}
+              onClick={() => navigate(`/editUser/${user.id}`)}
               className="bg-blue-500 text-white p-2 rounded mt-2"
             >
               Edit User

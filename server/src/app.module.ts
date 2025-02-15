@@ -7,6 +7,9 @@ import { User } from './users/entities/user.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { KycInfoModule } from './kyc_info/kyc_info.module';
+import { BussInfoModule } from './buss_info/buss_info.module';
+import { DocsInfoModule } from './docs_info/docs_info.module';
 
 @Module({
   imports: [
@@ -25,7 +28,7 @@ import { join } from 'path';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // schema file generated auto
       context: ({ req, res }) => ({ req, res }), // now will get req / res in resolvers :
     })
-    ,UsersModule
+    ,UsersModule, KycInfoModule, BussInfoModule, DocsInfoModule
   ],
   controllers: [AppController],
   providers: [AppService],

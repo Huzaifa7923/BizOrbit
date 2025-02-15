@@ -21,6 +21,7 @@ const AppRoutes = () => {
           <Route path='/editProfile' element={<EditProfile/>}/>
           <Route path='' element={<AdminRoute/>} >
             <Route path='/users' element={<UsersList/>} />
+            <Route path='/editUser/:id' element={<EditProfile/>}/>
           </Route>
           </Route>
           </Routes>

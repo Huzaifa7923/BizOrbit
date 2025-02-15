@@ -16,9 +16,27 @@ type LoginResponse {
   user: User!
 }
 
+type KycInfo {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type BussInfo {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type DocsInfo {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   users: [User!]!
   user: User!
+  kycInfo(id: Int!): KycInfo!
+  bussInfo(id: Int!): BussInfo!
+  docsInfo(id: Int!): DocsInfo!
 }
 
 type Mutation {
@@ -26,6 +44,15 @@ type Mutation {
   signIn(signInInput: SignInInput!): LoginResponse!
   updateMyProfile(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  createKycInfo(createKycInfoInput: CreateKycInfoInput!): KycInfo!
+  updateKycInfo(updateKycInfoInput: UpdateKycInfoInput!): KycInfo!
+  removeKycInfo(id: Int!): KycInfo!
+  createBussInfo(createBussInfoInput: CreateBussInfoInput!): BussInfo!
+  updateBussInfo(updateBussInfoInput: UpdateBussInfoInput!): BussInfo!
+  removeBussInfo(id: Int!): BussInfo!
+  createDocsInfo(createDocsInfoInput: CreateDocsInfoInput!): DocsInfo!
+  updateDocsInfo(updateDocsInfoInput: UpdateDocsInfoInput!): DocsInfo!
+  removeDocsInfo(id: Int!): DocsInfo!
 }
 
 input CreateUserInput {
@@ -48,4 +75,37 @@ input UpdateUserInput {
   phone: String
   address: String
   newPassword: String
+}
+
+input CreateKycInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateKycInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateBussInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateBussInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateDocsInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateDocsInfoInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

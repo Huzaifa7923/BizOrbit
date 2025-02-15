@@ -26,12 +26,10 @@ export class UsersService {
     const user=await this.userRepository.findOne({
       where:{email}
     });
-
     if(!user){
       throw new UnauthorizedException('Invalid email');
     }
     const isValid=await bcrypt.compare(password, user.password);
-
     if(!isValid){
       throw new UnauthorizedException('Invalid password');
     }
@@ -116,10 +114,13 @@ export class UsersService {
       throw new error("Password do not match");
 
     if(updateUserInput.newPassword){ 
+      console.log("encrypting new pw")
       updateUserInput.password=await bcrypt.hash(updateUserInput.newPassword,10);
-    }
+    }else
+    updateUserInput.password=user.password;
     const updateData = omit(updateUserInput, ['newPassword']);
-
+    console.log("updating new data")
+    console.log(updateData);
     await this.userRepository.update(id, updateData);
     return this.findOne(id);
   }
