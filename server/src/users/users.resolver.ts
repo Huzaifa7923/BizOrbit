@@ -18,7 +18,7 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => LoginResponse)
-   async createUser(@Args('createUserInput') createUserInput: CreateUserInput, @Context() context: { res: Response }) {
+   async createUser(@Args('createUserInput') createUserInput: CreateUserInput, @Context() context) {
     const{token,user}=await this.usersService.create(createUserInput);
 
     context.res.cookie('token', token, {
@@ -55,11 +55,10 @@ export class UsersResolver {
 
   @UseGuards(AuthGuard)
   @Query(() => User, { name: 'user' })
-  myProfile(@Context() context) {
-    console.log("inside resolver");
-    const user=context.req.user;
-    console.log("isnide resolver",user);
-    return this.usersService.findOne(user.id);
+  async myProfile(@Context() context) {
+    const user= await this.usersService.findOne(context.req.user.id);
+    console.log(user)
+    return user;
   }
 
   @UseGuards(AuthGuard)

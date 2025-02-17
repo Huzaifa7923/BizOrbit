@@ -7,9 +7,13 @@ import { User } from './users/entities/user.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { KycInfoModule } from './kyc_info/kyc_info.module';
-import { BussInfoModule } from './buss_info/buss_info.module';
-import { DocsInfoModule } from './docs_info/docs_info.module';
+import { BusinessModule } from './business/business.module';
+import { KycModule } from './kyc/kyc.module';
+import { DocumentModule } from './document/document.module';
+import { Business } from './business/entities/business.entity';
+import { Kyc } from './kyc/entities/kyc.entity';
+import { Document } from './document/entities/document.entity';
+
 
 @Module({
   imports: [
@@ -20,7 +24,7 @@ import { DocsInfoModule } from './docs_info/docs_info.module';
       username:'root',
       password:'Huzaifa7923.',
       database:'sample_project',
-      entities: [User], //
+      entities: [User,Business,Kyc,Document], // Add entites
       synchronize: true, //create table if nahi ho
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -28,7 +32,7 @@ import { DocsInfoModule } from './docs_info/docs_info.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // schema file generated auto
       context: ({ req, res }) => ({ req, res }), // now will get req / res in resolvers :
     })
-    ,UsersModule, KycInfoModule, BussInfoModule, DocsInfoModule
+    ,UsersModule, BusinessModule, KycModule, DocumentModule
   ],
   controllers: [AppController],
   providers: [AppService],

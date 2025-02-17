@@ -2,6 +2,42 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Business {
+  """Example field (placeholder)"""
+  id: ID!
+  business_name: String!
+  gst_number: String!
+  pan_number: String!
+  address: String!
+  pin_code: String!
+  created_at: DateTime!
+  update_at: DateTime!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Document {
+  id: ID!
+  user: User!
+  docType: String!
+  fileUrl: String
+}
+
+type Kyc {
+  """Example field (placeholder)"""
+  id: ID!
+  aadhaarNumber: String!
+  panNumber: String!
+  kycStatus: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+}
+
 type User {
   id: ID!
   email: String!
@@ -9,6 +45,11 @@ type User {
   phone: String!
   address: String!
   isAdmin: Boolean!
+  businesses: [Business!]
+  created_at: DateTime!
+  update_at: DateTime!
+  kyc: Kyc
+  documents: [Document!]
 }
 
 type LoginResponse {
@@ -16,27 +57,12 @@ type LoginResponse {
   user: User!
 }
 
-type KycInfo {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type BussInfo {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type DocsInfo {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
   users: [User!]!
   user: User!
-  kycInfo(id: Int!): KycInfo!
-  bussInfo(id: Int!): BussInfo!
-  docsInfo(id: Int!): DocsInfo!
+  business: [Business!]!
+  kyc(id: Int!): Kyc!
+  document(id: Int!): Document!
 }
 
 type Mutation {
@@ -44,15 +70,17 @@ type Mutation {
   signIn(signInInput: SignInInput!): LoginResponse!
   updateMyProfile(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
-  createKycInfo(createKycInfoInput: CreateKycInfoInput!): KycInfo!
-  updateKycInfo(updateKycInfoInput: UpdateKycInfoInput!): KycInfo!
-  removeKycInfo(id: Int!): KycInfo!
-  createBussInfo(createBussInfoInput: CreateBussInfoInput!): BussInfo!
-  updateBussInfo(updateBussInfoInput: UpdateBussInfoInput!): BussInfo!
-  removeBussInfo(id: Int!): BussInfo!
-  createDocsInfo(createDocsInfoInput: CreateDocsInfoInput!): DocsInfo!
-  updateDocsInfo(updateDocsInfoInput: UpdateDocsInfoInput!): DocsInfo!
-  removeDocsInfo(id: Int!): DocsInfo!
+  createBusiness(createBusinessInput: CreateBusinessInput!): Business!
+  updateMyBusiness(updateBusinessInput: UpdateBusinessInput!): Business!
+  updateBusiness(updateBusinessInput: UpdateBusinessInput!): Business!
+  removeBusiness(id: Int!): Business!
+  createKyc(createKycInput: CreateKycInput!): Kyc!
+  updateMyKyc(updateKycInput: UpdateKycInput!): Kyc!
+  updateKyc(updateKycInput: UpdateKycInput!): Kyc!
+  removeKyc(id: Int!): Kyc!
+  createDocument(createDocumentInput: CreateDocumentInput!): Document!
+  updateDocument(updateDocumentInput: UpdateDocumentInput!): Document!
+  removeDocument(id: Int!): Document!
 }
 
 input CreateUserInput {
@@ -77,34 +105,40 @@ input UpdateUserInput {
   newPassword: String
 }
 
-input CreateKycInfoInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateBusinessInput {
+  business_name: String!
+  gst_number: String!
+  pan_number: String!
+  address: String!
+  pin_code: String!
 }
 
-input UpdateKycInfoInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+input UpdateBusinessInput {
+  business_name: String
+  gst_number: String
+  pan_number: String
+  address: String
+  pin_code: String
   id: Int!
 }
 
-input CreateBussInfoInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateKycInput {
+  aadhaarNumber: String
+  panNumber: String
 }
 
-input UpdateBussInfoInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+input UpdateKycInput {
+  aadhaarNumber: String
+  panNumber: String
   id: Int!
 }
 
-input CreateDocsInfoInput {
+input CreateDocumentInput {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
-input UpdateDocsInfoInput {
+input UpdateDocumentInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

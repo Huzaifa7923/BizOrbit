@@ -4,6 +4,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 // import { GlobalExceptionFilter } from './common/filters/exception.filter';
 import * as cookieParser from 'cookie-parser';
+import e, * as express from 'express'
+import { join } from 'path';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,10 +21,10 @@ async function bootstrap() {
     transform: true, // transform payloads to DTO instances
     whitelist: true, // remove unwanted fields
   }));
-
-
+  app.use("/uploads", express.static(join(__dirname, "..", "uploads")));
   // app.useGlobalInterceptors(new ResponseInterceptor());
   // app.useGlobalFilters(new GlobalExceptionFilter());
+  
   await app.listen(process.env.PORT ?? 3000);
 
 

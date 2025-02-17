@@ -25,8 +25,15 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
 
-    const ctx = GqlExecutionContext.create(context); // guard k paas direct accees nhi hota unlike resolvers
-    const request = ctx.getContext().req;
+    let request;
+    // console.log(request)
+    if(context.getType()=="http"){
+      request = context.switchToHttp().getRequest();
+    }else{
+      const ctx = GqlExecutionContext.create(context); // guard k paas direct accees nhi hota unlike resolvers
+      request = ctx.getContext().req;
+    }
+
 
 
     const token = request.cookies?.token; 

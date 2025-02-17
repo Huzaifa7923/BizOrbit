@@ -1,10 +1,10 @@
-// Columns -> at db level
-// Fields -> at graphql level
-
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Business } from 'src/business/entities/business.entity';
+import { Document } from 'src/document/entities/document.entity';
+import { Kyc } from 'src/kyc/entities/kyc.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 
-@ObjectType()
+@ObjectType() 
 @Entity()
 export class User {
   
@@ -37,5 +37,25 @@ export class User {
 
   @Column({default:false})
   isDeleted:boolean
-  
+
+  @Field(() => [Business], { nullable: true }) 
+  @OneToMany(()=>Business,(business)=>business.user)
+  businesses:Business[];
+
+  @Field()
+  @CreateDateColumn()
+  created_at:Date;
+
+  @Field()
+  @UpdateDateColumn()
+  update_at:Date
+
+  @Field(()=>Kyc,{nullable:true})
+  @OneToOne(()=>Kyc,(Kyc)=>Kyc.user,{cascade:true})
+  kyc:Kyc
+
+  @Field(()=>[Document],{nullable:true})
+  @OneToMany(()=>Document,(documents)=>documents.user,{cascade:true})
+  documents:Document[]
+
 }
