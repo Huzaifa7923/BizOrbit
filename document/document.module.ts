@@ -14,7 +14,17 @@ import { DocumentsController } from './document.controller';
   imports:[
     TypeOrmModule.forFeature([User,Document]),
     UsersModule,
-    // UsersModuled
+    MulterModule.register({
+      storage:diskStorage({
+        destination:'./uploads',
+        filename:(req,file,cb)=>{
+          const fileExt=extname(file.originalname) // extension of file
+          const fileName = `${file.fieldname}_${Date.now()}${fileExt}`;
+          cb(null,fileName)
+        },
+      })
+    })
+    // UsersModule
   ],
   providers: [DocumentResolver, DocumentService],
   controllers:[DocumentsController]

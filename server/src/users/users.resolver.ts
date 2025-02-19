@@ -3,14 +3,12 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-profile.input';
-import { Res, UseGuards } from '@nestjs/common';
-import { Admin } from 'typeorm';
+import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.auth';
 import { SignInInput } from './dto/sign-in.input';
 import { LoginResponse } from './dto/signIn-response';
 import { Response } from 'express'; // Import Response from express
-import { error } from 'console';
 
 
 @Resolver(() => User)
@@ -29,11 +27,15 @@ export class UsersResolver {
     return {token,user};
   }
 
+
   @UseGuards(AuthGuard,AdminGuard)
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    console.log("inside resolver");
-    return this.usersService.findAll();
+  findAll(
+    @Args('limit', { type: () => Int, defaultValue: 10 }) limit: number,
+    @Args('offset', { type: () => Int, defaultValue: 0 }) offset: number
+  ) {
+    console.log(limit)
+    return this.usersService.findAll({limit,offset});
   }
 
   @Mutation(() => LoginResponse)
@@ -57,7 +59,6 @@ export class UsersResolver {
   @Query(() => User, { name: 'user' })
   async myProfile(@Context() context) {
     const user= await this.usersService.findOne(context.req.user.id);
-    console.log(user)
     return user;
   }
 

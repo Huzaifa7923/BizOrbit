@@ -14,7 +14,6 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
   intercept(context: ExecutionContext, next: CallHandler): Observable<ApiResponse<T>> {
     return next.handle().pipe(
       map((data) => {
-        // Log the response data before transforming
         console.log('Data before transformation: ', data);
 
         if (Array.isArray(data)) {

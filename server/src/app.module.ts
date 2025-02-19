@@ -13,7 +13,7 @@ import { DocumentModule } from './document/document.module';
 import { Business } from './business/entities/business.entity';
 import { Kyc } from './kyc/entities/kyc.entity';
 import { Document } from './document/entities/document.entity';
-
+// import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [

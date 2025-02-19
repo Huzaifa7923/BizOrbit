@@ -58,7 +58,7 @@ type LoginResponse {
 }
 
 type Query {
-  users: [User!]!
+  users(limit: Int! = 10, offset: Int! = 0): [User!]!
   user: User!
   business: [Business!]!
   kyc(id: Int!): Kyc!
@@ -78,7 +78,7 @@ type Mutation {
   updateMyKyc(updateKycInput: UpdateKycInput!): Kyc!
   updateKyc(updateKycInput: UpdateKycInput!): Kyc!
   removeKyc(id: Int!): Kyc!
-  createDocument(createDocumentInput: CreateDocumentInput!): Document!
+  uploadDocument(docType: String!, file: Upload!): Document!
   updateDocument(updateDocumentInput: UpdateDocumentInput!): Document!
   removeDocument(id: Int!): Document!
 }
@@ -133,10 +133,8 @@ input UpdateKycInput {
   id: Int!
 }
 
-input CreateDocumentInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input UpdateDocumentInput {
   """Example field (placeholder)"""

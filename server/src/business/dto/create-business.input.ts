@@ -1,6 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { isString } from 'lodash';
 
 @InputType()
 export class CreateBusinessInput {

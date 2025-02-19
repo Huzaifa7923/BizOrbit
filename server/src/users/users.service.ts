@@ -11,6 +11,7 @@ import {omit} from 'lodash';
 
 import { SignInInput } from './dto/sign-in.input';
 import { error } from 'console';
+import { PaginationArgs } from 'src/common/dto/pagination.dto';
 
 
 @Injectable()
@@ -89,9 +90,13 @@ export class UsersService {
     }
   }
 
-  async findAll() {
+  async findAll({limit,offset}:PaginationArgs) {
+    console.log(limit)
+    console.log(offset);
       return this.userRepository.find({
-        relations:['businesses']
+        take:limit,
+        skip:offset,
+        relations:['businesses','documents']
       });
   }
 
