@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { GET_DOCUMENTS } from '../graphql/documents/documentsQueries';
-import { gql } from '@apollo/client';
+import { UPLOAD_DOCUMENT } from '../graphql/documents/documentMutation';
 
 const schema = yup.object().shape({
   docType: yup.string().required('Document type is required'),
@@ -16,16 +16,7 @@ const AddDocumentModal = ({ onClose, isOpen }) => {
     resolver: yupResolver(schema),
   });
 
-  const [uploadDocument, { loading }] = useMutation(gql`
-    mutation UploadDocument($docType: String!, $file: Upload!) {
-      uploadDocument(docType: $docType, file: $file) {
-        id
-        docType
-        fileUrl
-        uploadedDate
-      }
-    }
-  `, {
+  const [uploadDocument, { loading }] = useMutation(UPLOAD_DOCUMENT, {
     onCompleted: () => {
       onClose();
     },

@@ -35,12 +35,6 @@ const [isDocumentModalOpen,setIsDocumentModalOpen]=useState(false);
         <p>Email: {data.user.email}</p>
         <p>Phone: {data.user.phone}</p>
         <p>Address:{data.user.address??"Not on profile"}</p>
-        <button
-          onClick={() => navigate("/editProfile")}
-          className="bg-blue-500 text-white p-2 rounded mt-4 hover:cursor-pointer"
-        >
-          Edit Profile
-        </button>
         {data && data.user && (
           <button
             onClick={() => navigate("/businessDetails")}
@@ -61,6 +55,13 @@ const [isDocumentModalOpen,setIsDocumentModalOpen]=useState(false);
           >
             View documents
           </button>
+
+          <button
+          onClick={() => navigate("/editProfile")}
+          className="bg-green-500 text-white p-2 rounded mt-4 ml-4 hover:cursor-pointer"
+        >
+          Edit Profile
+        </button>
 
           <button
             onClick={() => setIsAddModalOpen(true)}
