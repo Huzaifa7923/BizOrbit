@@ -13,6 +13,8 @@ import { DocumentModule } from './document/document.module';
 import { Business } from './business/entities/business.entity';
 import { Kyc } from './kyc/entities/kyc.entity';
 import { Document } from './document/entities/document.entity';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 // import { CommonModule } from './common/common.module';
 
 @Module({

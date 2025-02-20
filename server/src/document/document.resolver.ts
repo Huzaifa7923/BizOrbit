@@ -32,6 +32,13 @@ export class DocumentResolver {
     // return this.documentService.create(createDocumentInput);
   // }
 
+  @UseGuards(AuthGuard)
+  @Query(()=>[Document],{name:'myDocuments'})
+  myDocuments(@Context() context){
+    console.log("zzzzz");
+    return this.documentService.findMyDocuments(context.req.user.id)
+  }
+
   @Query(() => [Document], { name: 'document' })
   findAll() {
     return this.documentService.findAll();

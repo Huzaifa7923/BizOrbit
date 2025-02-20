@@ -2,14 +2,25 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import {useApolloClient} from '@apollo/client'
+import { useQuery } from "@apollo/client";
+import { GET_MY_PROFILE } from "../graphql/users/userQueries";
 
 const Taskbar = () => {
+  
+  const { data, loading, error } = useQuery(GET_MY_PROFILE, {
+    fetchPolicy: 'cache-first'
+  });
+  console.log(data)
+  const client = useApolloClient();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
+
+  const handleLogout = async() => {
     dispatch(logout()); // Clear auth and users state
+    await client.clearStore();
     navigate("/signin"); // Redirect to the sign-in page
   };
 
@@ -20,9 +31,9 @@ const Taskbar = () => {
           onClick={() => navigate("/profile")}
           className="hover:bg-gray-700 px-4 py-2 rounded s"
         >
-          {user?"My Profile":"Home"}
+          {data&&data.user?"My Profile":"Home"}
         </button>
-        {user?.isAdmin && (
+        {data &&data.user?.isAdmin && (
           <button
             onClick={() => navigate("/users")}
             className="hover:bg-gray-700 px-4 py-2 rounded"
@@ -32,8 +43,8 @@ const Taskbar = () => {
         )}
       </div>
       <div className="flex items-center space-x-4">
-        <span>Welcome {user?.name}</span>
-        {user && <>
+        <span>Welcome {data && data.user?.name}</span>
+        {data && data.user && <>
         <button
           onClick={handleLogout}
           className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded"

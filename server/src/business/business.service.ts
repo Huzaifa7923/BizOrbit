@@ -25,6 +25,16 @@ export class BusinessService {
     return this.businessRepository.find();
   }
 
+  async findMyBusiness(userId:number){
+    const buss=await this.businessRepository.find({
+      where:{
+        user:{
+          id:userId
+        }
+      }
+    })
+    return buss;
+  }
   // findOne(id: number) {
   //   return `This action returns a #${id} business`;
   // }

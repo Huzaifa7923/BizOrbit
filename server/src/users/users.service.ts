@@ -25,7 +25,8 @@ export class UsersService {
 
   async checkCredentials(email:string,password:string){
     const user=await this.userRepository.findOne({
-      where:{email}
+      where:{email},
+      relations:['businesses','documents','kyc']
     });
     if(!user){
       throw new UnauthorizedException('Invalid email');

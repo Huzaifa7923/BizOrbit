@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { act } from 'react';
 
 const initialState = {
   users: [],// will also have 
+  businesses:[]
 };
 
 const usersSlice = createSlice({
@@ -19,8 +21,18 @@ const usersSlice = createSlice({
     clearUsers: (state) => {
       state.users = [];
     },
+    setBusinessDetails:(
+      state,
+      action
+    )=>{
+      console.log("inside setBusinessDetails of usersSLice")
+      state.businesses = action.payload;
+    },
+    clearBusinesses:(state)=>{
+      state.businesses=[]
+    }
   },
 });
 
-export const { setCredentials, logout } = usersSlice.actions;
+export const { setCredentials, logout,setBusinessDetails } = usersSlice.actions;
 export default usersSlice.reducer;

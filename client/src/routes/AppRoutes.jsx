@@ -7,7 +7,10 @@ import AdminRoute from './AdminRoute.jsx'
 import UsersList from '../pages/UsersList.jsx'
 import SignUpForm from '../pages/SignUpForm.jsx'
 import Taskbar from '../components/Taskbar.jsx'
-import EditProfile from '../pages/EditProfile.jsx'
+import EditProfile from '../pages/edits/EditProfile.jsx'
+import BusinessDetails from '../pages/BusinessDetails.jsx'
+import DocumentDetails from '../pages/DocumentDetails.jsx'
+import KycDetails from '../pages/KycDetails.jsx'
 
 const AppRoutes = () => {
   return (
@@ -19,6 +22,9 @@ const AppRoutes = () => {
           <Route path='' element={<PrivateRoute/>} >
           <Route path='/profile' element={<MyProfile/>} />
           <Route path='/editProfile' element={<EditProfile/>}/>
+          <Route path='/businessDetails' element={<BusinessDetails/>}/>
+          <Route path='/kycDetails' element={<KycDetails/>}/>
+          <Route path='/documentDetails' element={<DocumentDetails/>}/>
           <Route path='' element={<AdminRoute/>} >
             <Route path='/users' element={<UsersList/>} />
             <Route path='/editUser/:id' element={<EditProfile/>}/>

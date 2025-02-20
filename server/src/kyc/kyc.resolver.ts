@@ -24,6 +24,12 @@ export class KycResolver {
     return this.kycService.findAll();
   }
 
+  @UseGuards(AuthGuard)
+  @Query(()=>[Kyc],{name:'myKyc'})
+  findMyKyc(@Context() context){
+    return this.kycService.findMyKyc(context.req.user.id);
+  }
+
   @Query(() => Kyc, { name: 'kyc' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.kycService.findOne(id);

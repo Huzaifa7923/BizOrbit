@@ -40,6 +40,15 @@ export class BusinessResolver {
     return this.businessService.updateBusiness(updateBusinessInput.id,updateBusinessInput);
   }
 
+  @UseGuards(AuthGuard)
+  @Query(() => [Business], { name: 'myBusiness' })
+  async myProfile(@Context() context) {
+    console.log("z");
+    const business= await this.businessService.findMyBusiness(context.req.user.id);
+    console.log(business)
+    return business;
+  }
+
   @Mutation(() => Business)
   removeBusiness(@Args('id', { type: () => Int }) id: number) {
     return this.businessService.remove(id);

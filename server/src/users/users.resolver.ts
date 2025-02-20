@@ -3,13 +3,13 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-profile.input';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.auth';
 import { SignInInput } from './dto/sign-in.input';
 import { LoginResponse } from './dto/signIn-response';
 import { Response } from 'express'; // Import Response from express
-
+import { ResponseInterceptor } from 'src/common/interceptors/response.interceptor';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -52,6 +52,7 @@ export class UsersResolver {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     });
 
+    console.log(user);
     return { token, user };
   }
 

@@ -11,7 +11,7 @@ export class Kyc {
 
   @Field()
   @Column({unique:true,nullable:false})
-  aadhaarNumber: string;
+  aadhaarNumber: number;
 
   @Field()
   @Column({unique:true,nullable:false})

@@ -23,6 +23,7 @@ export class Document {
   @Column({unique:true})
   fileUrl:string
 
+  @Field()
   @CreateDateColumn()
   uploadedDate:Date
 }

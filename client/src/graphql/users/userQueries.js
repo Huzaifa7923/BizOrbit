@@ -11,3 +11,17 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
+
+
+export const GET_MY_PROFILE=gql`
+query {
+  user{
+      id
+      email
+      name
+      phone
+      address
+      isAdmin
+  }
+}
+`

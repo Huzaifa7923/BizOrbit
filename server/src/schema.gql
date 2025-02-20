@@ -11,7 +11,7 @@ type Business {
   address: String!
   pin_code: String!
   created_at: DateTime!
-  update_at: DateTime!
+  updated_at: DateTime!
   user: User!
 }
 
@@ -25,12 +25,13 @@ type Document {
   user: User!
   docType: String!
   fileUrl: String
+  uploadedDate: DateTime!
 }
 
 type Kyc {
   """Example field (placeholder)"""
   id: ID!
-  aadhaarNumber: String!
+  aadhaarNumber: Float!
   panNumber: String!
   kycStatus: String!
   createdAt: DateTime!
@@ -61,7 +62,10 @@ type Query {
   users(limit: Int! = 10, offset: Int! = 0): [User!]!
   user: User!
   business: [Business!]!
+  myBusiness: [Business!]!
   kyc(id: Int!): Kyc!
+  myKyc: [Kyc!]!
+  myDocuments: [Document!]!
   document(id: Int!): Document!
 }
 
@@ -123,12 +127,12 @@ input UpdateBusinessInput {
 }
 
 input CreateKycInput {
-  aadhaarNumber: String
+  aadhaarNumber: Float
   panNumber: String
 }
 
 input UpdateKycInput {
-  aadhaarNumber: String
+  aadhaarNumber: Float
   panNumber: String
   id: Int!
 }

@@ -6,7 +6,7 @@ export class CreateKycInput {
 
   @IsNotEmpty()
   @Field({nullable:true})
-  aadhaarNumber: string;
+  aadhaarNumber: number;
 
   @IsNotEmpty()
   @Field({nullable:true})

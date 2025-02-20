@@ -36,7 +36,7 @@ export class Business {
 
   @Field()
   @UpdateDateColumn()
-  update_at:Date
+  updated_at:Date
 
   // curr relation & then reverse relation 
   @ManyToOne(()=>User,(user)=>user.businesses,{onDelete:"CASCADE",onUpdate:"CASCADE"})

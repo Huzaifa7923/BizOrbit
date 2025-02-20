@@ -23,6 +23,18 @@ export class KycService {
     return kycs;
   }
 
+  async findMyKyc(id:number){
+    const kycs=await this.kycRepository.find({
+      where:{
+        user:{
+          id
+        }
+      }
+    });
+    console.log(kycs)
+    return kycs;
+  }
+
   async updateMyKyc( updateKycInput: UpdateKycInput) {
     await this.kycRepository.update(updateKycInput.id,updateKycInput);
     return await this.kycRepository.findOne({where:{id:updateKycInput.id},relations:['user']});

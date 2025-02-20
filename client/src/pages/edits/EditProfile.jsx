@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../store/slices/authSlice";
+import { setCredentials } from "../../store/slices/authSlice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { UPDATE_USER } from "../graphql/users/userMutations";
+import { UPDATE_USER } from "../../graphql/users/userMutations";
 
 
 const EditProfile = () => {

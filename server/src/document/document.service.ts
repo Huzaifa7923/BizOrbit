@@ -88,6 +88,17 @@ export class DocumentService {
     return document;
   }
 
+  async findMyDocuments(userId){
+    const documents=await this.documentRepository.find({
+      where:{
+        user:{
+          id:userId
+        }
+      }
+    })
+    console.log(documents)
+    return documents;
+  }
   create(createDocumentInput: CreateDocumentInput) {
     console.log("xxxxx");
     console.log(createDocumentInput)
