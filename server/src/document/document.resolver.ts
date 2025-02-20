@@ -26,11 +26,6 @@ export class DocumentResolver {
     return this.documentService.uploadFileGql(context.req.user.id, docType, file);
   }
 
-  // @Mutation(() => Document)
-  // createDocument(@Args('createDocumentInput') createDocumentInput: CreateDocumentInput) {
-    // console.log(createDocumentInput);
-    // return this.documentService.create(createDocumentInput);
-  // }
 
   @UseGuards(AuthGuard)
   @Query(()=>[Document],{name:'myDocuments'})

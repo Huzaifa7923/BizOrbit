@@ -11,7 +11,6 @@ import AddDocumentModal from "../components/AddDocumentModal";
 const MyProfile = () => {
   console.log("inside my profile");
 const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-const [isAddKycModalOpen, setIsAddKycModalOpen] = useState(false);
 const [isDocumentModalOpen,setIsDocumentModalOpen]=useState(false);
 
   const { data, loading, error } = useQuery(GET_MY_PROFILE, {

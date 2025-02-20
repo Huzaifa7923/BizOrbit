@@ -33,7 +33,10 @@ const AddDocumentModal = ({ onClose, isOpen }) => {
   });
 
   const onSubmit = async (data) => {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+        console.log("No seleted file")
+        return;
+    }
     
     try {
       await uploadDocument({
