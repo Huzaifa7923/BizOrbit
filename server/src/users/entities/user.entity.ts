@@ -2,7 +2,8 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Business } from 'src/business/entities/business.entity';
 import { Document } from 'src/document/entities/document.entity';
 import { Kyc } from 'src/kyc/entities/kyc.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Role } from 'src/roles/entities/role.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 
 @ObjectType() 
 @Entity()
@@ -58,4 +59,7 @@ export class User {
   @OneToMany(()=>Document,(documents)=>documents.user,{cascade:true})
   documents:Document[]
 
+  @ManyToOne(()=>Role,(role)=>role.users)
+  @Field(()=>Role,{nullable:true})
+  role:Role
 }

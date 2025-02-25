@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { GET_BUSINESS } from "../graphql/business/businessQueries";
 import EditBusinessModal from "../components/EditBusinessModal";
 import AddBusinessModal from "../components/AddBusinessModal";
+import { useMutation, useLazyQuery } from '@apollo/client';
 
 const BusinessDetails = () => {
   const [selectedBusiness, setSelectedBusiness] = useState(null);

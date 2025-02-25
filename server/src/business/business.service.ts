@@ -21,8 +21,11 @@ export class BusinessService {
     return buss;
   }
 
-  findAll() {
-    return this.businessRepository.find();
+  async findAll() {
+    const business= await this.businessRepository.find({
+      relations:['user']
+    });
+    return business;
   }
 
   async findMyBusiness(userId:number){
@@ -56,9 +59,9 @@ export class BusinessService {
     if(!business)
       throw new NotFoundException("Business this with this id do not exist")
 
-    if(business?.user.id!=userid){
-      throw new UnauthorizedException("Not authorised to delete others business");
-    }
+    // if(business?.user.id!=userid){
+    //   throw new UnauthorizedException("Not authorised to delete others business");
+    // }
 
     const bussiness=await this.businessRepository.update(id,updateBusinessInput);
     return business;

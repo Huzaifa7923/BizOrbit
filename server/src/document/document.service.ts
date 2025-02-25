@@ -36,7 +36,11 @@ export class DocumentService {
     const filePath = join(uploadDir,fileName);
   
     console.log("inside service");
-  
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     // Write the file to the server's file system
     await new Promise<void>((resolve, reject) =>
       createReadStream()
@@ -50,12 +54,6 @@ export class DocumentService {
           reject(error);
         })
     );
-  
-    // Get the user
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user) {
-      throw new Error('User not found');
-    }
   
     console.log(user);
   

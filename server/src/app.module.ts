@@ -16,6 +16,12 @@ import { Document } from './document/entities/document.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 // import { CommonModule } from './common/common.module';
+import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/entities/role.entity';
+import { FeaturesModule } from './features/features.module';
+import { Feature } from './features/entities/feature.entity';
+import { PermissionsModule } from './permissions/permissions.module';
+import { Permission } from './permissions/entities/permission.entity';
 
 @Module({
   imports: [
@@ -26,7 +32,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
       username:'root',
       password:'Huzaifa7923.',
       database:'sample_project',
-      entities: [User,Business,Kyc,Document], // Add entites
+      entities: [User,Business,Kyc,Document,Role,Feature,Permission], // Add tables in database
       synchronize: true, //create table if nahi ho
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -34,7 +40,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // schema file generated auto
       context: ({ req, res }) => ({ req, res }), // now will get req / res in resolvers :
     })
-    ,UsersModule, BusinessModule, KycModule, DocumentModule
+    ,UsersModule, BusinessModule, KycModule, DocumentModule, RolesModule, FeaturesModule, PermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,7 +5,6 @@ import { CreateKycInput } from './dto/create-kyc.input';
 import { UpdateKycInput } from './dto/update-kyc.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/users/guards/auth.guard';
-import { AdminGuard } from 'src/users/guards/admin.auth';
 
 @Resolver(() => Kyc)
 export class KycResolver {
@@ -18,7 +17,7 @@ export class KycResolver {
     return this.kycService.create(context.req.user,createKycInput);
   }
 
-  @UseGuards(AuthGuard,AdminGuard)
+  @UseGuards(AuthGuard)
   @Query(() => [Kyc], { name: 'kyc' })
   findAll() {
     return this.kycService.findAll();
@@ -41,7 +40,7 @@ export class KycResolver {
     return this.kycService.updateMyKyc(updateKycInput);
   }
 
-  @UseGuards(AuthGuard,AdminGuard)
+  @UseGuards(AuthGuard)
   @Mutation(() => Kyc)
   updateKyc(@Args('updateKycInput') updateKycInput: UpdateKycInput) {
     return this.kycService.update(updateKycInput.id, updateKycInput);

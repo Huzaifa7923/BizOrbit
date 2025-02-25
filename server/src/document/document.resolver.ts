@@ -1,10 +1,8 @@
 import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { DocumentService } from './document.service';
 import { Document } from './entities/document.entity';
-import { CreateDocumentInput } from './dto/create-document.input';
 import { UpdateDocumentInput } from './dto/update-document.input';
-import { UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {  UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 
@@ -18,7 +16,6 @@ export class DocumentResolver {
     @Args('docType') docType: string,
     @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
     @Context() context
-
   ): Promise<Document> {
 
     console.log(docType)

@@ -8,6 +8,10 @@ export const GET_ALL_USERS = gql`
       email
       phone
       isAdmin
+      address
+      role{
+      role
+      }
     }
   }
 `;
@@ -22,6 +26,7 @@ query {
       phone
       address
       isAdmin
+      
   }
 }
 `

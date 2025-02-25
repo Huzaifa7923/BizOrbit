@@ -12,6 +12,7 @@ import {omit} from 'lodash';
 import { SignInInput } from './dto/sign-in.input';
 import { error } from 'console';
 import { PaginationArgs } from 'src/common/dto/pagination.dto';
+import { Role } from 'src/roles/entities/role.entity';
 
 
 @Injectable()
@@ -19,14 +20,15 @@ export class UsersService {
   private readonly JWT_SECRET="secret";
 
   constructor(
-    @InjectRepository(User) 
-    private userRepository: Repository<User>
+    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Role) private roleRepo:Repository<Role>
+    
   ) {}
 
   async checkCredentials(email:string,password:string){
     const user=await this.userRepository.findOne({
       where:{email},
-      relations:['businesses','documents','kyc']
+      relations:['businesses','documents','kyc','role']
     });
     if(!user){
       throw new UnauthorizedException('Invalid email');
@@ -39,9 +41,11 @@ export class UsersService {
   }
 
   async generateToken(user:User){
+    console.log(user)
     return jwt.sign({
       id:user.id,
-      isAdmin:user.isAdmin
+      isAdmin:user.isAdmin,
+      role:user.role.id
     }, this.JWT_SECRET, {
       expiresIn: '7d'
     })
@@ -91,20 +95,79 @@ export class UsersService {
     }
   }
 
+  async makeAdmin(){
+    const users=await this.userRepository.find({
+      where:{
+        isAdmin:true
+      }
+    })
+    const role=await this.roleRepo.findOne({
+      where:{
+        id:1
+      }
+    })
+    if(!role)
+      throw new Error("fa");
+
+    for (const user of users ) {
+      await this.userRepository.update(user.id,{
+        role:role
+      });
+   }
+
+   const c= await this.userRepository.find({
+    where:{isAdmin:true},
+    relations:['role']
+   })
+   console.log(c);
+
+   return c;
+  }
+
+  async makeNormalUser(){
+    const users=await this.userRepository.find({
+      where:{
+        isAdmin:false
+      }
+    })
+    const role=await this.roleRepo.findOne({
+      where:{
+        id:2
+      }
+    })
+    if(!role)
+      throw new Error("fa");
+
+    for (const user of users ) {
+      await this.userRepository.update(user.id,{
+        role:role
+      });
+   }
+
+   const c= await this.userRepository.find({
+    where:{isAdmin:false},
+    relations:['role']
+   })
+   console.log(c);
+
+   return c;
+  }
+
   async findAll({limit,offset}:PaginationArgs) {
     console.log(limit)
     console.log(offset);
-      return this.userRepository.find({
+      const users= await this.userRepository.find({
         take:limit,
         skip:offset,
-        relations:['businesses','documents']
+        relations:['businesses','documents','role']
       });
+      return users
   }
 
   async findOne(id: number) {
     const user= await this.userRepository.findOne({
       where: {id},
-      relations:['businesses','kyc','documents'],
+      relations:['businesses','kyc','documents','role'],
     });
     // console.log(user);
 

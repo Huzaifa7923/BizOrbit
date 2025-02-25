@@ -5,7 +5,6 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-profile.input';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.auth';
 import { SignInInput } from './dto/sign-in.input';
 import { LoginResponse } from './dto/signIn-response';
 import { Response } from 'express'; // Import Response from express
@@ -28,14 +27,26 @@ export class UsersResolver {
   }
 
 
-  @UseGuards(AuthGuard,AdminGuard)
+  @UseGuards(AuthGuard)
   @Query(() => [User], { name: 'users' })
-  findAll(
+  async findAll(
     @Args('limit', { type: () => Int, defaultValue: 10 }) limit: number,
     @Args('offset', { type: () => Int, defaultValue: 0 }) offset: number
   ) {
     console.log(limit)
-    return this.usersService.findAll({limit,offset});
+    const users= await this.usersService.findAll({limit,offset});
+    console.log(users)
+    return users;
+  }
+
+  @Query(()=>User)
+  makeAdminRole(){
+    return this.usersService.makeAdmin();
+  }
+
+  @Query(()=>User)
+  makeNormalRole(){
+    return this.usersService.makeNormalUser();
   }
 
   @Mutation(() => LoginResponse)
@@ -69,11 +80,6 @@ export class UsersResolver {
     return this.usersService.updateProfile(context.req.user.id,updateUserInput)
   }
 
-
-  // @Mutation(() => User)
-  // updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-  //   return this.usersService.update(updateUserInput.id, updateUserInput);
-  // }
 
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => Int }) id: number) {

@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {useEffect} from 'react';
-
+import { GET_MY_PERMISSION } from '../graphql/permissions/permissionQueries';
+import { client } from '../apollo/client';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -30,16 +31,10 @@ export const LoginForm= () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION);
 
   const {user} = useSelector((state) => state.auth);
-
-  useEffect(()=>{
-    if(user){
-        navigate('/profile');
-    }
-},[user,navigate])
-
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -53,9 +48,21 @@ export const LoginForm= () => {
         },
       });
       if (result.data) {
-        console.log("before dispatching");
-        console.log(result.data.signIn.user);
+
         dispatch(setCredentials(result.data.signIn.user));
+        try {
+          const permissionResult = await client.query({
+            query: GET_MY_PERMISSION,
+          });
+
+          if (permissionResult.data?.getMyPermission) {
+
+            localStorage.setItem('userPermissions', JSON.stringify(permissionResult.data.getMyPermission));
+          }
+        } catch (permError) {
+          console.error('Error fetching permissions:', permError);
+        }
+        console.log("xxxxx");
         navigate('/profile');
       }
     } catch (err) {

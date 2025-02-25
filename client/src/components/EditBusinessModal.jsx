@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { UPDATE_BUSINESS } from '../graphql/business/businessMutation';
-import { GET_BUSINESS } from '../graphql/business/businessQueries';
+import { GET_ALL_BUSINESS, GET_BUSINESS } from '../graphql/business/businessQueries';
 
 const schema = yup.object().shape({
   business_name: yup.string().required('Business name is required'),
@@ -30,7 +30,7 @@ const EditBusinessModal = ({ business, onClose, isOpen }) => {
     onCompleted: () => {
       onClose();
     },
-    refetchQueries: [{ query: GET_BUSINESS }]
+    refetchQueries: [{ query: GET_BUSINESS },{query:GET_ALL_BUSINESS}]
   });
 
   const onSubmit = (data) => {

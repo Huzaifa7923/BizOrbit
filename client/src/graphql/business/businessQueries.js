@@ -14,3 +14,21 @@ query {
   }
 }
 `;
+
+export const GET_ALL_BUSINESS = gql`
+query {
+  businesses{
+      id
+      business_name
+      gst_number
+      pan_number
+      address
+      pin_code
+      created_at
+      updated_at
+      user{
+      name
+      }
+  }
+}
+`;

@@ -5,7 +5,6 @@ import { CreateBusinessInput } from './dto/create-business.input';
 import { UpdateBusinessInput } from './dto/update-business.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/users/guards/auth.guard';
-import { AdminGuard } from 'src/users/guards/admin.auth';
 
 
 @Resolver(() => Business)
@@ -20,8 +19,8 @@ export class BusinessResolver {
     return this.businessService.create(userId,createBusinessInput);
   }
 
-  @UseGuards(AuthGuard,AdminGuard)
-  @Query(() => [Business], { name: 'business' })
+  @UseGuards(AuthGuard)
+  @Query(() => [Business], { name: 'businesses' })
   findAll() {
     return this.businessService.findAll();
   }
@@ -33,7 +32,7 @@ export class BusinessResolver {
     return this.businessService.updateMyBusiness(updateBusinessInput.id, context.req.user.id, updateBusinessInput);
   }
 
-  @UseGuards(AuthGuard,AdminGuard)
+  @UseGuards(AuthGuard)
   @Mutation(() => Business)
   updateBusiness(@Args('updateBusinessInput') updateBusinessInput: UpdateBusinessInput) {
     console.log(updateBusinessInput);

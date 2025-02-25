@@ -39,6 +39,13 @@ type Kyc {
   user: User!
 }
 
+type Role {
+  """Example field (placeholder)"""
+  id: Int!
+  role: String!
+  users: User!
+}
+
 type User {
   id: ID!
   email: String!
@@ -51,6 +58,7 @@ type User {
   update_at: DateTime!
   kyc: Kyc
   documents: [Document!]
+  role: Role
 }
 
 type LoginResponse {
@@ -58,15 +66,40 @@ type LoginResponse {
   user: User!
 }
 
+type Feature {
+  id: ID!
+  name: String!
+}
+
+type Permission {
+  id: ID!
+  role: Role!
+  feature: Feature!
+  canCreate: Boolean!
+  canRead: Boolean!
+  canUpdate: Boolean!
+  canDelete: Boolean!
+}
+
 type Query {
   users(limit: Int! = 10, offset: Int! = 0): [User!]!
+  makeAdminRole: User!
+  makeNormalRole: User!
   user: User!
-  business: [Business!]!
+  businesses: [Business!]!
   myBusiness: [Business!]!
+  roles: [Role!]!
+  role(id: Int!): Role!
   kyc(id: Int!): Kyc!
   myKyc: [Kyc!]!
   myDocuments: [Document!]!
   document(id: Int!): Document!
+  features: [Feature!]!
+  feature(id: Int!): Feature!
+  adminPermission: Permission!
+  getMyPermission: [Permission!]!
+  permissions: [Permission!]!
+  permission(id: Int!): Permission!
 }
 
 type Mutation {
@@ -78,6 +111,9 @@ type Mutation {
   updateMyBusiness(updateBusinessInput: UpdateBusinessInput!): Business!
   updateBusiness(updateBusinessInput: UpdateBusinessInput!): Business!
   removeBusiness(id: Int!): Business!
+  createRole(role: String!): Role!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
+  removeRole(id: Int!): Role!
   createKyc(createKycInput: CreateKycInput!): Kyc!
   updateMyKyc(updateKycInput: UpdateKycInput!): Kyc!
   updateKyc(updateKycInput: UpdateKycInput!): Kyc!
@@ -85,6 +121,12 @@ type Mutation {
   uploadDocument(docType: String!, file: Upload!): Document!
   updateDocument(updateDocumentInput: UpdateDocumentInput!): Document!
   removeDocument(id: Int!): Document!
+  createFeature(name: String!): Feature!
+  updateFeature(updateFeatureInput: UpdateFeatureInput!): Feature!
+  removeFeature(id: Int!): Feature!
+  createPermission(createPermissionInput: CreatePermissionInput!): Permission!
+  updatePermission: Permission!
+  removePermission(id: Int!): Permission!
 }
 
 input CreateUserInput {
@@ -126,6 +168,12 @@ input UpdateBusinessInput {
   id: Int!
 }
 
+input UpdateRoleInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
 input CreateKycInput {
   aadhaarNumber: Float
   panNumber: String
@@ -144,4 +192,15 @@ input UpdateDocumentInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input UpdateFeatureInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreatePermissionInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
