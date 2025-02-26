@@ -12,6 +12,7 @@ import BusinessDetails from '../pages/BusinessDetails.jsx'
 import DocumentDetails from '../pages/DocumentDetails.jsx'
 import KycDetails from '../pages/KycDetails.jsx'
 import AllBusinessDetails from '../pages/AllBusinessDetails.jsx'
+import ManageAccess from '../pages/ManageAccess.jsx'
 
 const AppRoutes = () => {
   return (
@@ -27,7 +28,7 @@ const AppRoutes = () => {
           <Route path='/allBusiness' element={<AllBusinessDetails/>}/>
           <Route path='/kycDetails' element={<KycDetails/>}/>
           <Route path='/documentDetails' element={<DocumentDetails/>}/>
-
+          <Route path='/manageAccess' element={<ManageAccess/>}/>
           <Route path='' element={<AdminRoute/>} >
             <Route path='/users' element={<UsersList/>} />
             <Route path='/editUser/:id' element={<EditProfile/>}/>

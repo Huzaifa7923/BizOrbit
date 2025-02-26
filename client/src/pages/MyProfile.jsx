@@ -190,6 +190,17 @@ const {user}=useSelector((state)=>state.auth)
                 }
               </div>
 
+        {/* Manage Access Section */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Manage Access</h2>
+          <button
+            onClick={() => navigate("/manageAccess")}
+            className="bg-yellow-500 text-white p-2 rounded"
+          >
+            Manage Access
+          </button>
+        </div>
+        
               <AddBusinessModal
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}

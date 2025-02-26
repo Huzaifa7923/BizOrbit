@@ -61,7 +61,7 @@ const hasPermission=(featureName,permissionType)=>{
             <tbody>
               {data?.users.map((user) => (
                 <tr key={user.id} className="border-t">
-                  <td className="px-4 py-2">{user.id}</td>
+                  <td className="px-4 py-2">{user.id??"Not added"}</td>
                   <td className="px-4 py-2">{user.email??"Not added"}</td>
                   <td className="px-4 py-2">{user.name??"Not added"}</td>
                   <td className="px-4 py-2">{user.phone??"Not added"}</td>
