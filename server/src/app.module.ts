@@ -30,7 +30,7 @@ import { Permission } from './permissions/entities/permission.entity';
       host:'localhost',
       port:3306,
       username:'root',
-      password:'Huzaifa7923.',
+      password:'xnxx',
       database:'sample_project',
       entities: [User,Business,Kyc,Document,Role,Feature,Permission], // Add tables in database
       synchronize: true, //create table if nahi ho
