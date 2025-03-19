@@ -19,3 +19,22 @@ export const GET_MY_PERMISSION = gql`
     }
   }
 `;
+
+export const GET_ALL_PERMISSIONS = gql`
+query {
+  permissions{
+    canRead
+    canCreate
+    canUpdate
+    canDelete
+    role{
+      role
+      id
+    }
+    id
+    feature{
+      name
+    }
+  }
+}
+`

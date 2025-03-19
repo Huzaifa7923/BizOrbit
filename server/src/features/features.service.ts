@@ -13,11 +13,12 @@ export class FeaturesService {
 
   async create(name: string) {
     const feat=await this.featRepo.save({name});
-    return feat;
+    return feat
   }
 
-  findAll() {
-    return `This action returns all features`;
+  async findAll() {
+    const f=await this.featRepo.find();
+    return f; 
   }
 
   findOne(id: number) {

@@ -1,55 +1,30 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-
-const accessData = [
-  {
-    id: 1,
-    role: "Admin",
-    canRead: true,
-    canUpdate: true,
-    canDelete: true,
-    canCreate: true,
-  },
-  {
-    id: 2,
-    role: "Editor",
-    canRead: true,
-    canUpdate: true,
-    canDelete: false,
-    canCreate: true,
-  },
-  {
-    id: 3,
-    role: "Viewer",
-    canRead: true,
-    canUpdate: false,
-    canDelete: false,
-    canCreate: false,
-  },
-];
+import { useQuery } from "@apollo/client";
+import { GET_ALL_PERMISSIONS } from "../graphql/permissions/permissionQueries";
 
 const ManageAccess = () => {
-  const [accessList, setAccessList] = useState(accessData);
+
   const [editingAccess, setEditingAccess] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [permissions,setPermissions]=useState([]);
 
-
-  useEffect(()=>{
-    const storedPermissions = localStorage.getItem('userPermissions');
-    console.log("inside use Effect of myProfile ")
-    if (storedPermissions) {
-      setPermissions(JSON.parse(storedPermissions));
-    }
-  },[])
-  
+  const {getAllPermissions,loading, error}=useQuery(GET_ALL_PERMISSIONS,{
+    onCompleted:(data)=>{
+      setPermissions(data.permissions)
+    },
+    onError:(error)=>{
+      console.log("error",error)
+    } 
+  })
   
   const handleEdit = (id) => {
-    const accessToEdit = accessList.find((access) => access.id === id);
+    console.log(id);
+    const accessToEdit = permissions.find((permission) => permission.id === id);
     setEditingAccess(accessToEdit);
     setIsModalOpen(true);
   };
-
+ 
   const handleDelete = (id) => {
     setAccessList(accessList.filter((access) => access.id !== id));
     // Call API to delete access
@@ -74,6 +49,7 @@ const ManageAccess = () => {
           <thead>
             <tr>
               <th className="px-4 py-2">Role</th>
+              <th className="px-4 py-2">Feature</th>
               <th className="px-4 py-2">Can Read</th>
               <th className="px-4 py-2">Can Update</th>
               <th className="px-4 py-2">Can Delete</th>
@@ -82,10 +58,10 @@ const ManageAccess = () => {
             </tr>
           </thead>
           <tbody>
-            
             {
                 permissions && permissions.map((permission) => (
                     <tr key={permission.id} className="border-t">
+                        <td className="px-4 py-2">{permission.role.role}</td>
                         <td className="px-4 py-2">{permission.feature.name}</td>
                         <td className="px-4 py-2">
                             <input

@@ -23,8 +23,6 @@ export class PermissionsResolver {
   @UseGuards(AuthGuard)
   @Query(()=>[Permission])
   getMyPermission(@Context() context){
-    console.log("zxxxxxxx");
-    console.log(context.req.user)
     return this.permissionsService.getMyPerm(context.req.user.role);
   }
 
@@ -39,8 +37,15 @@ export class PermissionsResolver {
   }
 
   @Mutation(() => Permission)
-  updatePermission() {
-    return this.permissionsService.update();
+  addPerm(
+    @Args('feature') feature: string,
+    @Args('role') role: string,
+    @Args('canCreate', { type: () => Boolean }) canCreate: boolean,
+    @Args('canRead', { type: () => Boolean }) canRead: boolean,
+    @Args('canUpdate', { type: () => Boolean }) canUpdate: boolean,
+    @Args('canDelete', { type: () => Boolean }) canDelete: boolean,
+  ) {
+    return this.permissionsService.addPerm(feature,role,canCreate,canRead,canUpdate,canDelete);
   }
 
   @Mutation(() => Permission)
